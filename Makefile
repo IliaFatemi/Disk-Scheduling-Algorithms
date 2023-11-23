@@ -16,8 +16,8 @@ $(EXECUTABLE): $(OBJ)
 
 clean:
 	rm -f $(filter-out list.o, $(OBJ)) $(EXECUTABLE)
-	rm -f assignment3.zip
+	rm -f assignment4.zip
 
 zip:
-	rm -f assignment3.zip
+	rm -f assignment4.zip
 	zip assignment4.zip Makefile DSSimul.c
