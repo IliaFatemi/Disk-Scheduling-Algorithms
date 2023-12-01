@@ -8,16 +8,19 @@ int main(int argc, char *argv[]){
     int requested_list_size;
     char *arg = argv[1];
     char *ptr = arg;
-        while (*ptr != '\0' && requested_list_size < MIN_REQUESTS) {
-            // Extract integers separated by commas
-            int track = strtol(ptr, &ptr, 10);
-            if (ptr == arg || *ptr != ',' && *ptr != '\0') {
-                printf("Invalid input format.\n");
-                return 1;
-            }
-            request_list[requested_list_size++] = track;
-            if (*ptr == ',') ptr++; // Move past the comma
+
+    while (*ptr != '\0' && requested_list_size < MIN_REQUESTS) {
+        // Extract integers separated by commas
+        int track = strtol(ptr, &ptr, 10);
+        if (ptr == arg || *ptr != ',' && *ptr != '\0') {
+            printf("Invalid input format.\n");
+            return 1;
         }
+        request_list[requested_list_size++] = track;
+        if (*ptr == ',') ptr++; // Move past the comma
+    }
+
+    int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size], c_scan_order[requested_list_size];
 
 
     return 0;
