@@ -2,51 +2,69 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 
-// Function to implement Scan algorithm
+
 void sstf(int request_list[], int requested_list_size, int sstf_order[]) {
     int sstf_tracks[requested_list_size],
     readWrite_head = request_list[0],
     readWrite_head_index,
     num_processed_tracks = 0,
-    total_distance_covered = 0;
+    total_distance_covered = 0,
+    shortest_distance_neighbor_index = 0;
 
     copyTracks(request_list, sstf_tracks, requested_list_size);
-    sortTracks(sstf_tracks, requested_list_size, true);
     readWrite_head_index = findIndexTrack(sstf_tracks, readWrite_head, requested_list_size);
 
-    for(int i = readWrite_head_index; i < requested_list_size; i++){
-        sstf_order[num_processed_tracks] = sstf_tracks[i];
+    while(num_processed_tracks < requested_list_size){
+        sstf_order[num_processed_tracks] = sstf_tracks[readWrite_head_index];
+        shortest_distance_neighbor_index = shortestDistance(sstf_tracks, sstf_tracks[readWrite_head_index], requested_list_size);
+        sstf_tracks[readWrite_head_index] = -1;
+        readWrite_head_index = shortest_distance_neighbor_index;
         num_processed_tracks++;
     }
-
-    for(int i = readWrite_head_index-1; i >= 0; i--){
-        sstf_order[num_processed_tracks] = sstf_tracks[i];
-        num_processed_tracks++;
-    }
-
-    compare(request_list, sstf_order, requested_list_size);
 }
 
 void scan(int request_list[], int requested_list_size, int scan_order[]){
-    int readWrite_head = request_list[0];
-}
+    int scan_tracks[requested_list_size],
+    readWrite_head = request_list[0],
+    num_processed_tracks = 0, 
+    tracker = readWrite_head; 
+    bool reverse_tracker = true;
 
-void sortTracks(int tracks[], int size, bool decending){
-    if(decending){
-        selectionSort(tracks, size);
-    }else{
-        int temp;
-        for(int i = 0; i < size; i++){
-            for(int j = i + 1; j< size; j++){
-                if(tracks[i] > tracks[j]){
-                    temp = tracks[i];
-                    tracks[i] = tracks[j];
-                    tracks[j] = temp;
-                }
-            }
+    copyTracks(request_list, scan_tracks, requested_list_size);
+    scan_order[num_processed_tracks] = readWrite_head;
+    scan_tracks[num_processed_tracks] = -1;
+    num_processed_tracks++;
+
+    while (num_processed_tracks < requested_list_size){
+        if(isInRequest(scan_tracks, tracker, requested_list_size)){
+            scan_order[num_processed_tracks] = request_list[findIndexTrack(request_list, tracker, requested_list_size)];
+            num_processed_tracks++;
+        }
+        if(reverse_tracker){
+            tracker--;
+        }else{
+            tracker++;
+        }
+        if(tracker > TRACK_SIZE && reverse_tracker == false){
+            reverse_tracker = true;
+            tracker = TRACK_SIZE;
+        }else if(tracker < 0 && reverse_tracker == true){
+            tracker = 0;
+            reverse_tracker = false;
         }
     }
+}
+
+bool isInRequest(int tracks[], int track, int size){
+    for(int i = 0; i < size; i++){
+        if(tracks[i] == track){
+            tracks[i] = -1;
+            return true;
+        }
+    }
+    return false;
 }
 
 int findIndexTrack(int tracks[], int track, int size){
@@ -64,16 +82,16 @@ void copyTracks(int source[], int destination[], int size){
     }
 }
 
-int findMinTrack(int tracks[], int start, int end){
-    int min = tracks[start], index = start;
-    while(start < end){
-        if(min > tracks[start]){
-            min = tracks[start];
-            index = start;
+int shortestDistance(int tracks[], int start, int end){
+    int min = __INT_MAX__, index = 0, pos = 0;
+    while(index < end){
+        if(tracks[index] != start && tracks[index] != -1 && abs(start-tracks[index]) < min){
+            min = abs(start-tracks[index]);
+            pos = index;
         }
-        start++;
+        index++;
     }
-    return index;
+    return pos;
 }
 
 void print_task_order(int task[], int size){
@@ -93,6 +111,7 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size){
     print_task_order(requested_tracks, size);
     printf("Serviced Task sequence: ");
     print_task_order(proccessed_tracks, size);
+    printf("\n");
 
     int delayed, sum = 0, num_delays = 0, longest_delay = 0, longest_delay_track = 0, total_traversal = 0;
     for(int i = 0; i < size; i++){
@@ -110,31 +129,12 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size){
         }
     }
 
-    printf("Total tracks traversed: %d\n", total_traversal);
+    printf("\nTotal tracks traversed: %d\n", total_traversal);
+    printf("Total delays: %d\n", num_delays);
     if(longest_delay == 0){
         printf("Longest delay: None\n");
     }else{
         printf("Longest delay: %d from track %d\n", longest_delay, longest_delay_track);
     }
     printf("Avg Delay time: %.2f\n", (double)(sum/num_delays));
-}
-
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-void selectionSort(int tracks[], int size) {
-    for (int i = 0; i < size - 1; i++) {
-        int max_idx = i;
-        for (int j = i + 1; j < size; j++) {
-            if (tracks[j] > tracks[max_idx]) {
-                max_idx = j;
-            }
-        }
-        if (max_idx != i) {
-            swap(&tracks[i], &tracks[max_idx]);
-        }
-    }
 }

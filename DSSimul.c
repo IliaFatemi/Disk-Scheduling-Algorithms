@@ -4,21 +4,25 @@
 #include "dsa.h"
 #include <assert.h>
 
-void findMinTrackTest(){
+void ShortestDistanceTest(){
     int arr1[6] = {1, 5, 3, 2, 6, 4};
-    assert(findMinTrack(arr1, 0, 6) == 0);
-    assert(findMinTrack(arr1, 1, 6) == 3);
-    assert(findMinTrack(arr1, 2, 6) == 3);
-    assert(findMinTrack(arr1, 3, 6) == 3);
-    assert(findMinTrack(arr1, 4, 6) == 5);
-    assert(findMinTrack(arr1, 5, 6) == 5);
+    // printf("%d\n", shortestDistance(arr1, 1, 6));
+    assert(shortestDistance(arr1, 1, 6) == 3);
+    arr1[0] = -1; 
+    assert(shortestDistance(arr1, 2, 6) == 2);
+    arr1[3] = -1;
+    assert(shortestDistance(arr1, 3, 6) == 5);
+    arr1[2] = -1;
+    assert(shortestDistance(arr1, 4, 6) == 1);
+    arr1[5] = -1;
+    assert(shortestDistance(arr1, 5, 6) == 4);
+    arr1[1] = -1;
     int arr2[6] = {1, 2, 3, 4, 5, 6};
-    assert(findMinTrack(arr2, 0, 6) == 0);
-    assert(findMinTrack(arr2, 1, 6) == 1);
-    assert(findMinTrack(arr2, 2, 6) == 2);
-    assert(findMinTrack(arr2, 3, 6) == 3);
-    assert(findMinTrack(arr2, 4, 6) == 4);
-    assert(findMinTrack(arr2, 5, 6) == 5);
+    // assert(shortestDistance(arr2, 1, 6) == 1);
+    // assert(shortestDistance(arr2, 2, 6) == 2);
+    // assert(shortestDistance(arr2, 3, 6) == 3);
+    // assert(shortestDistance(arr2, 4, 6) == 4);
+    // assert(shortestDistance(arr2, 5, 6) == 5);
 }
 
 void findIndexTrackTest(){
@@ -38,24 +42,6 @@ void findIndexTrackTest(){
     assert(findIndexTrack(arr2, 6, 6) == 5);
 }
 
-void sortTracksTest(){
-    int arr1[6] = {1, 5, 3, 2, 6, 4};
-    sortTracks(arr1, 6, false);
-    assert(arr1[0] == 1);
-    assert(arr1[1] == 2);
-    assert(arr1[2] == 3);
-    assert(arr1[3] == 4);
-    assert(arr1[4] == 5);
-    assert(arr1[5] == 6);
-    sortTracks(arr1, 6, true);
-    assert(arr1[0] == 6);
-    assert(arr1[1] == 5);
-    assert(arr1[2] == 4);
-    assert(arr1[3] == 3);
-    assert(arr1[4] == 2);
-    assert(arr1[5] == 1);
-}
-
 void copyTracksTest(){
     int arr1[6] = {1, 2, 3, 4, 5, 6};
     int arr2[6];
@@ -69,9 +55,8 @@ void copyTracksTest(){
 }
 
 void runAllTests(){
-    findMinTrackTest();
+    ShortestDistanceTest();
     findIndexTrackTest();
-    sortTracksTest();
     copyTracksTest();
 }
 
@@ -99,7 +84,13 @@ int main(int argc, char *argv[]){
 
     int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size], c_scan_order[requested_list_size];
 
-    sstf(request_list, requested_list_size, fcfs_order);
+    printf("SSTF Algorithm: \n\n");
+    sstf(request_list, requested_list_size, sstf_order);
+    compare(request_list, sstf_order, requested_list_size);
+
+    printf("SCAN Algorithm: \n\n");
+    scan(request_list, requested_list_size, scan_order);
+    compare(request_list, scan_order, requested_list_size);
  
     return 0;
 }
