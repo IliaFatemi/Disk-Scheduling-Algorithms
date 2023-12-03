@@ -24,6 +24,6 @@ int findIndexTrack(int tracks[], int track, int size);
 void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Algorithm alg, enum Algorithm compareToAlg);
 bool isInRequest(int tracks[], int track, int size);
 void generateRandomNum(int requested_tracks[]);
-void printDelays(int requested_tracks[], int proccessed_tracks[], int size);
+void printDelaysStat(int requested_tracks[], int proccessed_tracks[], int size, bool print_delays);
 int traversalTime(int track[], int size, enum Algorithm alg);
 #endif

@@ -158,12 +158,14 @@ void print_task_order(int task[], int size){
     printf(")\n");
 }
 
-void printDelays(int requested_tracks[], int proccessed_tracks[], int size){
+void printDelaysStat(int requested_tracks[], int proccessed_tracks[], int size, bool print_delays){
     int delayed, sum = 0, num_delays = 0, longest_delay = 0, longest_delay_track = 0;
     for(int i = 0; i < size; i++){
         delayed = findIndexTrack(proccessed_tracks, proccessed_tracks[i], size) - findIndexTrack(requested_tracks, proccessed_tracks[i], size);
         if(delayed > 0){
-            printf("Track %d: delayed by %d\n", proccessed_tracks[i], delayed);
+            if(print_delays){
+                printf("Track %d: delayed by %d\n", proccessed_tracks[i], delayed);
+            }
             num_delays++;
             sum += delayed;
             if(delayed > longest_delay){
@@ -213,19 +215,19 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Alg
             printf("SSTF Task Sequence: ");
             print_task_order(proccessed_tracks, size);
             printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, compareToAlg));
-            printDelays(requested_tracks, proccessed_tracks, size);
+            printDelaysStat(requested_tracks, proccessed_tracks, size, false);
             break;
         case SCAN:
             printf("SCAN Task Sequence: ");
             print_task_order(proccessed_tracks, size);
             printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, compareToAlg));
-            printDelays(requested_tracks, proccessed_tracks, size);
+            printDelaysStat(requested_tracks, proccessed_tracks, size, false);
             break;
         case FCFS:
             printf("FCFS Task Sequence: ");
             print_task_order(proccessed_tracks, size);
             printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, compareToAlg));
-            printDelays(requested_tracks, proccessed_tracks, size);
+            printDelaysStat(requested_tracks, proccessed_tracks, size, false);
             break;
         default:
             printf("Invalid algorithm type\n");
