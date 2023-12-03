@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
+#include <time.h>
 
 
 void sstf(int request_list[], int requested_list_size, int sstf_order[]) {
@@ -137,4 +138,33 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size){
         printf("Longest delay: %d from track %d\n", longest_delay, longest_delay_track);
     }
     printf("Avg Delay time: %.2f\n", (double)(sum/num_delays));
+}
+
+void generateRandomNum(int requested_tracks[]){
+        int i, j, num;
+    srand(time(NULL)); // Seed the random number generator
+
+    for (i = 0; i < MIN_REQUESTS; i++) {
+        int exists;
+        do {
+            exists = 0;
+            num = rand() % TRACK_SIZE; // Generate a random number in the range [0, 199]
+
+            // Check if the number already exists in the list
+            for (j = 0; j < i; j++) {
+                if (requested_tracks[j] == num) {
+                    exists = 1;
+                    break;
+                }
+            }
+        } while (exists); // Repeat until a unique number is found
+
+        requested_tracks[i] = num; // Add the unique number to the list
+    }
+
+    printf("Generated List of Unique Random Integers:\n");
+    for (i = 0; i < MIN_REQUESTS; i++) {
+        printf("%d ", requested_tracks[i]);
+    }
+    printf("\n");
 }

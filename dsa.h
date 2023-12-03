@@ -18,4 +18,5 @@ int shortestDistance(int tracks[], int start, int end);
 int findIndexTrack(int tracks[], int track, int size);
 void compare(int requested_tracks[], int proccessed_tracks[], int size);
 bool isInRequest(int tracks[], int track, int size);
+void generateRandomNum(int requested_tracks[]);
 #endif

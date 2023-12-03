@@ -17,12 +17,6 @@ void ShortestDistanceTest(){
     arr1[5] = -1;
     assert(shortestDistance(arr1, 5, 6) == 4);
     arr1[1] = -1;
-    int arr2[6] = {1, 2, 3, 4, 5, 6};
-    // assert(shortestDistance(arr2, 1, 6) == 1);
-    // assert(shortestDistance(arr2, 2, 6) == 2);
-    // assert(shortestDistance(arr2, 3, 6) == 3);
-    // assert(shortestDistance(arr2, 4, 6) == 4);
-    // assert(shortestDistance(arr2, 5, 6) == 5);
 }
 
 void findIndexTrackTest(){
@@ -68,18 +62,24 @@ int main(int argc, char *argv[]){
 
     int request_list[MIN_REQUESTS];
     int requested_list_size;
-    char *arg = argv[1];
-    char *ptr = arg;
 
-    while (*ptr != '\0' && requested_list_size < MIN_REQUESTS) {
-        // Extract integers separated by commas
-        int track = strtol(ptr, &ptr, 10);
-        if (ptr == arg || *ptr != ',' && *ptr != '\0') {
-            printf("Invalid input format.\n");
-            return 1;
+    if(argc > 1){
+        char *arg = argv[1];
+        char *ptr = arg;
+
+        while (*ptr != '\0' && requested_list_size < MIN_REQUESTS) {
+            // Extract integers separated by commas
+            int track = strtol(ptr, &ptr, 10);
+            if (ptr == arg || *ptr != ',' && *ptr != '\0') {
+                printf("Invalid input format.\n");
+                return 1;
+            }
+            request_list[requested_list_size++] = track;
+            if (*ptr == ',') ptr++; // Move past the comma
         }
-        request_list[requested_list_size++] = track;
-        if (*ptr == ',') ptr++; // Move past the comma
+    }else{
+        generateRandomNum(request_list);
+        requested_list_size = MIN_REQUESTS;
     }
 
     int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size], c_scan_order[requested_list_size];
