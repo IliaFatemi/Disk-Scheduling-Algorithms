@@ -127,7 +127,8 @@ void generateRandomNum(int requested_tracks[]){
 int traversalTime(int tracks[], int size, enum Algorithm alg){
     int total_travel = 0, distance = 0;
     switch (alg){
-        case SSTF:
+        case FCFS:
+        case (SSTF):
             for(int i = 0; i < size-1; i++){
                 distance = tracks[i] - tracks[i+1];
                 if(distance < 0){
@@ -139,9 +140,6 @@ int traversalTime(int tracks[], int size, enum Algorithm alg){
             return total_travel;
         case SCAN:
             return tracks[0] + tracks[size-1];
-        case FCFS:
-            
-            break;
         default:
             printf("Invalid algorithm type\n");
             return -1;
@@ -223,6 +221,7 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Alg
         case FCFS:
             printf("FCFS Task Sequence: ");
             print_task_order(proccessed_tracks, size);
+            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, FCFS));
             printDelays(requested_tracks, proccessed_tracks, size);
             break;
         default:
