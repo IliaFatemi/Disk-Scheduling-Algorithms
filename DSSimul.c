@@ -55,9 +55,9 @@ void runAllTests(){
 }
 
 int main(int argc, char *argv[]){
-    printf("Running tests...\n");
+    printf("\nRunning unit tests: ");
     runAllTests();
-    printf("Done\n\n");
+    printf(COLOR_GREEN"Successful"COLOR_RESET"\n\n");
 
 
     int request_list[MIN_REQUESTS];
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]){
         requested_list_size = MIN_REQUESTS;
     }
 
-    int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size];
+    int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size], cscan_order[requested_list_size];
 
     printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" SSTF\n" COLOR_RESET);
     sstf(request_list, requested_list_size, sstf_order);
@@ -92,8 +92,12 @@ int main(int argc, char *argv[]){
     scan(request_list, requested_list_size, scan_order);
     compare(request_list, scan_order, requested_list_size, FCFS, SCAN);
 
-    printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" FCFS\n" COLOR_RESET);
-    compare(request_list, request_list, requested_list_size, FCFS, FCFS);
+    printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" CSCAN\n" COLOR_RESET);
+    cscan(request_list, requested_list_size, cscan_order);
+    compare(request_list, cscan_order, requested_list_size, FCFS, CSCAN);
+
+    printf(COLOR_RED "\nSCAN " COLOR_RESET "VS." COLOR_GREEN" CSCAN\n" COLOR_RESET);
+    compare(scan_order, cscan_order, requested_list_size, SCAN, CSCAN);
  
     return 0;
 }

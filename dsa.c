@@ -58,6 +58,38 @@ void scan(int request_list[], int requested_list_size, int scan_order[]){
     }
 }
 
+void cscan(int request_list[], int requested_list_size, int cscan_order[]){
+    int scan_tracks[requested_list_size],
+    readWrite_head = request_list[0],
+    num_processed_tracks = 0, 
+    tracker = readWrite_head; 
+    bool reverse_tracker = true;
+
+    copyTracks(request_list, scan_tracks, requested_list_size);
+    cscan_order[num_processed_tracks] = readWrite_head;
+    scan_tracks[num_processed_tracks] = -1;
+    num_processed_tracks++;
+
+    while (num_processed_tracks < requested_list_size){
+        if(isInRequest(scan_tracks, tracker, requested_list_size)){
+            cscan_order[num_processed_tracks] = request_list[findIndexTrack(request_list, tracker, requested_list_size)];
+            num_processed_tracks++;
+        }
+        
+        tracker--;
+        
+    
+        if(tracker < 0 && reverse_tracker == true){
+            tracker = TRACK_SIZE;
+            reverse_tracker = false;
+        }else if(tracker > 200 && reverse_tracker == false){
+            tracker = 0;
+            reverse_tracker = true;
+        }
+    }
+
+}
+
 bool isInRequest(int tracks[], int track, int size){
     for(int i = 0; i < size; i++){
         if(tracks[i] == track){
@@ -140,6 +172,8 @@ int traversalTime(int tracks[], int size, enum Algorithm alg){
             return total_travel;
         case SCAN:
             return tracks[0] + tracks[size-1];
+        case CSCAN:
+            return tracks[0] + (TRACK_SIZE-1) + abs((tracks[size-1]-(TRACK_SIZE-1)));
         default:
             printf("Invalid algorithm type\n");
             return -1;
@@ -205,6 +239,11 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Alg
             print_task_order(requested_tracks, size);
             printf("Total Travesal: %d\n", traversalTime(requested_tracks, size, alg));
             break;
+        case CSCAN:
+            printf("CSCAN Task sequence: ");
+            print_task_order(requested_tracks, size);
+            printf("Total Travesal: %d\n", traversalTime(requested_tracks, size, alg));
+            break;
         default:
             printf("Invalid algorithm type\n");
             return;
@@ -225,6 +264,12 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Alg
             break;
         case FCFS:
             printf("FCFS Task Sequence: ");
+            print_task_order(proccessed_tracks, size);
+            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, compareToAlg));
+            printDelaysStat(requested_tracks, proccessed_tracks, size, false);
+            break;
+        case CSCAN:
+            printf("CSCAN Task Sequence: ");
             print_task_order(proccessed_tracks, size);
             printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, compareToAlg));
             printDelaysStat(requested_tracks, proccessed_tracks, size, false);
