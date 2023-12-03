@@ -5,18 +5,20 @@
 #include <math.h>
 #include <time.h>
 
-
+// Shortest Seek Time First algorithm
 void sstf(int request_list[], int requested_list_size, int sstf_order[]) {
-    int sstf_tracks[requested_list_size],
-    readWrite_head = request_list[0],
-    readWrite_head_index,
-    num_processed_tracks = 0,
-    total_distance_covered = 0,
-    shortest_distance_neighbor_index = 0;
+    int sstf_tracks[requested_list_size], // Track list
+        readWrite_head = request_list[0], // Current head position
+        readWrite_head_index, // Index of the current head position
+        num_processed_tracks = 0, // Number of processed tracks
+        total_distance_covered = 0, // Total distance covered
+        shortest_distance_neighbor_index = 0; // Index of the nearest track
 
+    // Copy the tracks to be processed
     copyTracks(request_list, sstf_tracks, requested_list_size);
     readWrite_head_index = findIndexTrack(sstf_tracks, readWrite_head, requested_list_size);
 
+    // Process tracks based on SSTF algorithm
     while(num_processed_tracks < requested_list_size){
         sstf_order[num_processed_tracks] = sstf_tracks[readWrite_head_index];
         shortest_distance_neighbor_index = shortestDistance(sstf_tracks, sstf_tracks[readWrite_head_index], requested_list_size);
@@ -26,18 +28,21 @@ void sstf(int request_list[], int requested_list_size, int sstf_order[]) {
     }
 }
 
+// SCAN algorithm
 void scan(int request_list[], int requested_list_size, int scan_order[]){
-    int scan_tracks[requested_list_size],
-    readWrite_head = request_list[0],
-    num_processed_tracks = 0, 
-    tracker = readWrite_head; 
-    bool reverse_tracker = true;
+    int scan_tracks[requested_list_size], // Track list
+        readWrite_head = request_list[0], // Current head position
+        num_processed_tracks = 0,
+        tracker = readWrite_head; // Tracker for head movement
+    bool reverse_tracker = true; // Flag for direction of head movement
 
+    // Copy the tracks to be processed
     copyTracks(request_list, scan_tracks, requested_list_size);
     scan_order[num_processed_tracks] = readWrite_head;
     scan_tracks[num_processed_tracks] = -1;
     num_processed_tracks++;
 
+    // Process tracks based on SCAN algorithm
     while (num_processed_tracks < requested_list_size){
         if(isInRequest(scan_tracks, tracker, requested_list_size)){
             scan_order[num_processed_tracks] = request_list[findIndexTrack(request_list, tracker, requested_list_size)];
@@ -48,6 +53,7 @@ void scan(int request_list[], int requested_list_size, int scan_order[]){
         }else{
             tracker++;
         }
+        // Check boundary conditions for head movement
         if(tracker > TRACK_SIZE && reverse_tracker == false){
             reverse_tracker = true;
             tracker = TRACK_SIZE;
@@ -58,38 +64,42 @@ void scan(int request_list[], int requested_list_size, int scan_order[]){
     }
 }
 
+// Circular SCAN algorithm
 void cscan(int request_list[], int requested_list_size, int cscan_order[]){
-    int scan_tracks[requested_list_size],
-    readWrite_head = request_list[0],
-    num_processed_tracks = 0, 
-    tracker = readWrite_head; 
-    bool reverse_tracker = true;
+    int scan_tracks[requested_list_size], // Track list
+        readWrite_head = request_list[0], // Current head position
+        num_processed_tracks = 0,
+        tracker = readWrite_head; // Tracker for head movement
+    bool reverse_tracker = true; // Flag for direction of head movement
 
+    // Copy the tracks to be processed
     copyTracks(request_list, scan_tracks, requested_list_size);
     cscan_order[num_processed_tracks] = readWrite_head;
     scan_tracks[num_processed_tracks] = -1;
     num_processed_tracks++;
 
+    // Process tracks based on Circular SCAN algorithm
     while (num_processed_tracks < requested_list_size){
         if(isInRequest(scan_tracks, tracker, requested_list_size)){
             cscan_order[num_processed_tracks] = request_list[findIndexTrack(request_list, tracker, requested_list_size)];
             num_processed_tracks++;
         }
         
-        tracker--;
+        tracker--; // Move the head
         
-    
+        // Check boundary conditions for head movement in Circular SCAN
         if(tracker < 0 && reverse_tracker == true){
-            tracker = TRACK_SIZE;
-            reverse_tracker = false;
+            tracker = TRACK_SIZE; // Move to the end of the track
+            reverse_tracker = false; // Change direction
         }else if(tracker > 200 && reverse_tracker == false){
-            tracker = 0;
-            reverse_tracker = true;
+            tracker = 0; // Move to the beginning of the track
+            reverse_tracker = true; // Change direction
         }
     }
 
 }
 
+// check if a track is in the request list
 bool isInRequest(int tracks[], int track, int size){
     for(int i = 0; i < size; i++){
         if(tracks[i] == track){
@@ -100,6 +110,7 @@ bool isInRequest(int tracks[], int track, int size){
     return false;
 }
 
+// Find the index of a track in the track list
 int findIndexTrack(int tracks[], int track, int size){
     for (int i = 0; i < size; i++){
         if(tracks[i] == track){
@@ -109,12 +120,14 @@ int findIndexTrack(int tracks[], int track, int size){
     return -1;
 }
 
+// Copy tracks from source to destination
 void copyTracks(int source[], int destination[], int size){
     for (int i = 0; i < size; i++) {
         destination[i] = source[i];
     }
 }
 
+// Find the track with the shortest distance from a start track
 int shortestDistance(int tracks[], int start, int end){
     int min = __INT_MAX__, index = 0, pos = 0;
     while(index < end){
@@ -127,6 +140,7 @@ int shortestDistance(int tracks[], int start, int end){
     return pos;
 }
 
+// Generate a list of unique random integers
 void generateRandomNum(int requested_tracks[]){
         int i, j, num;
     srand(time(NULL)); // Seed the random number generator
@@ -156,6 +170,7 @@ void generateRandomNum(int requested_tracks[]){
     printf("\n");
 }
 
+// Calculate traversal time based on the selected algorithm
 int traversalTime(int tracks[], int size, enum Algorithm alg){
     int total_travel = 0, distance = 0;
     switch (alg){
@@ -180,6 +195,7 @@ int traversalTime(int tracks[], int size, enum Algorithm alg){
     }
 }
 
+// Print the sequence of tasks
 void print_task_order(int task[], int size){
     printf("(");
     for(int i = 0; i < size; i++){
@@ -192,6 +208,7 @@ void print_task_order(int task[], int size){
     printf(")\n");
 }
 
+// Print statistics related to delays in task execution
 void printDelaysStat(int requested_tracks[], int proccessed_tracks[], int size, bool print_delays){
     int delayed, sum = 0, num_delays = 0, longest_delay = 0, longest_delay_track = 0;
     for(int i = 0; i < size; i++){
@@ -222,6 +239,7 @@ void printDelaysStat(int requested_tracks[], int proccessed_tracks[], int size, 
     }
 }
 
+// Compare two algorithms based on their task execution
 void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Algorithm alg, enum Algorithm compareToAlg){
     switch (alg){
         case SSTF:

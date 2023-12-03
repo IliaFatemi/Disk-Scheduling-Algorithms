@@ -55,12 +55,15 @@ void runAllTests(){
 }
 
 int main(int argc, char *argv[]){
+
+    // Displaying a message for running unit tests
     printf("\nRunning unit tests: ");
     runAllTests();
     printf(COLOR_GREEN"Successful"COLOR_RESET"\n\n");
 
-
-    int request_list[MIN_REQUESTS];
+    
+    // Retrieving command line arguments or generating random numbers for FCFS order
+    int fcfs_order[MIN_REQUESTS];
     int requested_list_size;
 
     if(argc > 1){
@@ -74,28 +77,33 @@ int main(int argc, char *argv[]){
                 printf("Invalid input format.\n");
                 return 1;
             }
-            request_list[requested_list_size++] = track;
+            fcfs_order[requested_list_size++] = track;
             if (*ptr == ',') ptr++; // Move past the comma
         }
     }else{
-        generateRandomNum(request_list);
+        generateRandomNum(fcfs_order);
         requested_list_size = MIN_REQUESTS;
     }
 
-    int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size], cscan_order[requested_list_size];
+    // Arrays to store order for different scheduling algorithms
+    int sstf_order[requested_list_size], scan_order[requested_list_size], cscan_order[requested_list_size];
 
+    // Comparing FCFS with SSTF algorithm
     printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" SSTF\n" COLOR_RESET);
-    sstf(request_list, requested_list_size, sstf_order);
-    compare(request_list, sstf_order, requested_list_size, FCFS, SSTF);
+    sstf(fcfs_order, requested_list_size, sstf_order);
+    compare(fcfs_order, sstf_order, requested_list_size, FCFS, SSTF);
 
+    // Comparing FCFS with SCAN algorithm
     printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" SCAN\n" COLOR_RESET);
-    scan(request_list, requested_list_size, scan_order);
-    compare(request_list, scan_order, requested_list_size, FCFS, SCAN);
+    scan(fcfs_order, requested_list_size, scan_order);
+    compare(fcfs_order, scan_order, requested_list_size, FCFS, SCAN);
 
+    // Comparing FCFS with CSCAN algorithm
     printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" CSCAN\n" COLOR_RESET);
-    cscan(request_list, requested_list_size, cscan_order);
-    compare(request_list, cscan_order, requested_list_size, FCFS, CSCAN);
+    cscan(fcfs_order, requested_list_size, cscan_order);
+    compare(fcfs_order, cscan_order, requested_list_size, FCFS, CSCAN);
 
+    // Comparing SCAN with CSCAN algorithm
     printf(COLOR_RED "\nSCAN " COLOR_RESET "VS." COLOR_GREEN" CSCAN\n" COLOR_RESET);
     compare(scan_order, cscan_order, requested_list_size, SCAN, CSCAN);
  
