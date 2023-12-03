@@ -1,0 +1,39 @@
+
+Running unit tests: Successful
+
+
+FCFS VS.SSTF
+FCFS Task sequence: (50, 176, 79, 34, 60, 92, 11, 41, 114)
+Total Travesal: 510
+SSTF Task Sequence: (50, 41, 34, 11, 60, 79, 92, 114, 176)
+Total Travesal: 204
+Total delays: 3
+Longest delay: 7 from track 176
+Avg Delay time: 3.67
+
+FCFS VS.SCAN
+FCFS Task sequence: (50, 176, 79, 34, 60, 92, 11, 41, 114)
+Total Travesal: 510
+SCAN Task Sequence: (50, 41, 34, 11, 60, 79, 92, 114, 176)
+Total Travesal: 226
+Total delays: 3
+Longest delay: 7 from track 176
+Avg Delay time: 3.67
+
+FCFS VS.CSCAN
+FCFS Task sequence: (50, 176, 79, 34, 60, 92, 11, 41, 114)
+Total Travesal: 510
+CSCAN Task Sequence: (50, 41, 34, 11, 176, 114, 92, 79, 60)
+Total Travesal: 388
+Total delays: 4
+Longest delay: 5 from track 79
+Avg Delay time: 3.25
+
+SCAN VS.CSCAN
+SCAN Task sequence: (50, 41, 34, 11, 60, 79, 92, 114, 176)
+Total Travesal: 226
+CSCAN Task Sequence: (50, 41, 34, 11, 176, 114, 92, 79, 60)
+Total Travesal: 388
+Total delays: 2
+Longest delay: 4 from track 60
+Avg Delay time: 3.00

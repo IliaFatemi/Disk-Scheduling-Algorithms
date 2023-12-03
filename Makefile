@@ -20,4 +20,4 @@ clean:
 
 zip:
 	rm -f assignment4.zip
-	zip assignment4.zip Makefile DSSimul.c dsa.h dsa.c
+	zip assignment4.zip Makefile DSSimul.c dsa.h dsa.c my_output.txt
