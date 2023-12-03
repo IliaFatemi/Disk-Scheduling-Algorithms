@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS := -Werror -Wfatal-errors -g
 LDFLAGS =
 
-SRC = DSSimul.c dsa.c
+SRC = DSSimul.c dsa.c unitTests.c
 OBJ = $(SRC:.c=.o)
 EXECUTABLE = DSSimul
 
@@ -20,4 +20,4 @@ clean:
 
 zip:
 	rm -f assignment4.zip
-	zip assignment4.zip Makefile DSSimul.c dsa.h dsa.c my_output.txt
+	zip assignment4.zip Makefile DSSimul.c dsa.h dsa.c unitTests.c unitTests.h my_output.txt
