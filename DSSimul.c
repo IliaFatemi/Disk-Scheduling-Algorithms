@@ -82,7 +82,7 @@ int main(int argc, char *argv[]){
         requested_list_size = MIN_REQUESTS;
     }
 
-    int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size], c_scan_order[requested_list_size];
+    int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size];
 
     printf("SSTF Algorithm: \n\n");
     sstf(request_list, requested_list_size, sstf_order);
