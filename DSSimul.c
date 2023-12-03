@@ -84,13 +84,11 @@ int main(int argc, char *argv[]){
 
     int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size];
 
-    printf("SSTF Algorithm: \n\n");
     sstf(request_list, requested_list_size, sstf_order);
-    compare(request_list, sstf_order, requested_list_size);
+    compare(request_list, sstf_order, requested_list_size, FCFS, SSTF);
 
-    printf("SCAN Algorithm: \n\n");
     scan(request_list, requested_list_size, scan_order);
-    compare(request_list, scan_order, requested_list_size);
+    compare(request_list, scan_order, requested_list_size, FCFS, SCAN);
  
     return 0;
 }

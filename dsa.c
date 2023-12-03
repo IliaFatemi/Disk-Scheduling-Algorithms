@@ -95,56 +95,6 @@ int shortestDistance(int tracks[], int start, int end){
     return pos;
 }
 
-void print_task_order(int task[], int size){
-    printf("(");
-    for(int i = 0; i < size; i++){
-        if(i == size-1){
-            printf("%d", task[i]);
-        }else{
-            printf("%d, ", task[i]);
-        }
-    }
-    printf(")\n");
-}
-
-void compare(int requested_tracks[], int proccessed_tracks[], int size){
-    printf("Requested Tasks sequence: ");
-    print_task_order(requested_tracks, size);
-    printf("Serviced Task sequence: ");
-    print_task_order(proccessed_tracks, size);
-    printf("\n");
-
-    int delayed, sum = 0, num_delays = 0, longest_delay = 0, longest_delay_track = 0, total_traversal = 0;
-    for(int i = 0; i < size; i++){
-        delayed = findIndexTrack(proccessed_tracks, proccessed_tracks[i], size) - findIndexTrack(requested_tracks, proccessed_tracks[i], size);
-        if(delayed <= 0){
-            printf("Track %d: delayed by 0\n", proccessed_tracks[i]);
-        }else{
-            printf("Track %d: delayed by %d\n", proccessed_tracks[i], delayed);
-            num_delays++;
-            sum += delayed;
-            if(delayed > longest_delay){
-                longest_delay = delayed;
-                longest_delay_track = proccessed_tracks[i];
-            }
-        }
-    }
-
-    printf("\nTotal tracks traversed: %d\n", total_traversal);
-    printf("Total delays: %d\n", num_delays);
-    if(longest_delay == 0){
-        printf("Longest delay: None\n");
-    }else{
-        printf("Longest delay: %d from track %d\n", longest_delay, longest_delay_track);
-    }
-
-    if(num_delays != 0){
-        printf("Avg Delay time: %.2f\n", (double)(sum/num_delays));
-    }else{
-        printf("Avg Delay time: 0\n");
-    }
-}
-
 void generateRandomNum(int requested_tracks[]){
         int i, j, num;
     srand(time(NULL)); // Seed the random number generator
@@ -172,4 +122,111 @@ void generateRandomNum(int requested_tracks[]){
         printf("%d ", requested_tracks[i]);
     }
     printf("\n");
+}
+
+int traversalTime(int tracks[], int size, enum Algorithm alg){
+    int total_travel = 0, distance = 0;
+    switch (alg){
+        case SSTF:
+            for(int i = 0; i < size-1; i++){
+                distance = tracks[i] - tracks[i+1];
+                if(distance < 0){
+                    total_travel += abs(distance);
+                }else{
+                    total_travel += (tracks[i] - tracks[i+1]);
+                }
+            }
+            return total_travel;
+        case SCAN:
+            return tracks[0] + tracks[size-1];
+        case FCFS:
+            
+            break;
+        default:
+            printf("Invalid algorithm type\n");
+            return -1;
+    }
+}
+
+void print_task_order(int task[], int size){
+    printf("(");
+    for(int i = 0; i < size; i++){
+        if(i == size-1){
+            printf("%d", task[i]);
+        }else{
+            printf("%d, ", task[i]);
+        }
+    }
+    printf(")\n");
+}
+
+void printDelays(int requested_tracks[], int proccessed_tracks[], int size){
+    int delayed, sum = 0, num_delays = 0, longest_delay = 0, longest_delay_track = 0;
+    for(int i = 0; i < size; i++){
+        delayed = findIndexTrack(proccessed_tracks, proccessed_tracks[i], size) - findIndexTrack(requested_tracks, proccessed_tracks[i], size);
+        if(delayed > 0){
+            printf("Track %d: delayed by %d\n", proccessed_tracks[i], delayed);
+            num_delays++;
+            sum += delayed;
+            if(delayed > longest_delay){
+                longest_delay = delayed;
+                longest_delay_track = proccessed_tracks[i];
+            }
+        }
+    }
+    printf("Total delays: %d\n", num_delays);
+    if(longest_delay == 0){
+        printf("Longest delay: None\n");
+    }else{
+        printf("Longest delay: %d from track %d\n", longest_delay, longest_delay_track);
+    }
+
+    if(num_delays != 0){
+        printf("Avg Delay time: %.2f\n", ((double)sum/(double)num_delays));
+    }else{
+        printf("Avg Delay time: 0\n");
+    }
+}
+
+void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Algorithm alg, enum Algorithm compareToAlg){
+    switch (alg){
+        case SSTF:
+            printf("SSTF Task sequence: ");
+            print_task_order(requested_tracks, size);
+            break;
+        case SCAN:
+            printf("SCAN Task sequence: ");
+            print_task_order(requested_tracks, size);
+            break;
+        case FCFS:
+            printf("FCFS Task sequence: ");
+            print_task_order(requested_tracks, size);
+            break;
+        default:
+            printf("Invalid algorithm type\n");
+            return;
+    }
+
+    switch (compareToAlg){
+        case SSTF:
+            printf("SSTF Task Sequence: ");
+            print_task_order(proccessed_tracks, size);
+            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, SSTF));
+            printDelays(requested_tracks, proccessed_tracks, size);
+            break;
+        case SCAN:
+            printf("SCAN Task Sequence: ");
+            print_task_order(proccessed_tracks, size);
+            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, SCAN));
+            printDelays(requested_tracks, proccessed_tracks, size);
+            break;
+        case FCFS:
+            printf("FCFS Task Sequence: ");
+            print_task_order(proccessed_tracks, size);
+            printDelays(requested_tracks, proccessed_tracks, size);
+            break;
+        default:
+            printf("Invalid algorithm type\n");
+            return;
+    }
 }
