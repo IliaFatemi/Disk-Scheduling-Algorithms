@@ -137,7 +137,12 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size){
     }else{
         printf("Longest delay: %d from track %d\n", longest_delay, longest_delay_track);
     }
-    printf("Avg Delay time: %.2f\n", (double)(sum/num_delays));
+
+    if(num_delays != 0){
+        printf("Avg Delay time: %.2f\n", (double)(sum/num_delays));
+    }else{
+        printf("Avg Delay time: 0\n");
+    }
 }
 
 void generateRandomNum(int requested_tracks[]){
