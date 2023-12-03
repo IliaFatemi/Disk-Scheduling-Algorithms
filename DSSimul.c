@@ -84,11 +84,16 @@ int main(int argc, char *argv[]){
 
     int fcfs_order[requested_list_size], sstf_order[requested_list_size], scan_order[requested_list_size];
 
+    printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" SSTF\n" COLOR_RESET);
     sstf(request_list, requested_list_size, sstf_order);
     compare(request_list, sstf_order, requested_list_size, FCFS, SSTF);
 
+    printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" SCAN\n" COLOR_RESET);
     scan(request_list, requested_list_size, scan_order);
     compare(request_list, scan_order, requested_list_size, FCFS, SCAN);
+
+    printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" FCFS\n" COLOR_RESET);
+    compare(request_list, request_list, requested_list_size, FCFS, FCFS);
  
     return 0;
 }
