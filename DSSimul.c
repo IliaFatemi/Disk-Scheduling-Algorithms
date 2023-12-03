@@ -88,19 +88,21 @@ int main(int argc, char *argv[]){
     // Arrays to store order for different scheduling algorithms
     int sstf_order[requested_list_size], scan_order[requested_list_size], cscan_order[requested_list_size];
 
+    // Running all algorithms 
+    sstf(fcfs_order, requested_list_size, sstf_order);
+    scan(fcfs_order, requested_list_size, scan_order);
+    cscan(fcfs_order, requested_list_size, cscan_order);
+    
     // Comparing FCFS with SSTF algorithm
     printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" SSTF\n" COLOR_RESET);
-    sstf(fcfs_order, requested_list_size, sstf_order);
     compare(fcfs_order, sstf_order, requested_list_size, FCFS, SSTF);
 
     // Comparing FCFS with SCAN algorithm
     printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" SCAN\n" COLOR_RESET);
-    scan(fcfs_order, requested_list_size, scan_order);
     compare(fcfs_order, scan_order, requested_list_size, FCFS, SCAN);
 
     // Comparing FCFS with CSCAN algorithm
     printf(COLOR_RED "\nFCFS " COLOR_RESET "VS." COLOR_GREEN" CSCAN\n" COLOR_RESET);
-    cscan(fcfs_order, requested_list_size, cscan_order);
     compare(fcfs_order, cscan_order, requested_list_size, FCFS, CSCAN);
 
     // Comparing SCAN with CSCAN algorithm
