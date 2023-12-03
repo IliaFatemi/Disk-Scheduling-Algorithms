@@ -191,14 +191,17 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Alg
         case SSTF:
             printf("SSTF Task sequence: ");
             print_task_order(requested_tracks, size);
+            printf("Total Travesal: %d\n", traversalTime(requested_tracks, size, alg));
             break;
         case SCAN:
             printf("SCAN Task sequence: ");
             print_task_order(requested_tracks, size);
+            printf("Total Travesal: %d\n", traversalTime(requested_tracks, size, alg));
             break;
         case FCFS:
             printf("FCFS Task sequence: ");
             print_task_order(requested_tracks, size);
+            printf("Total Travesal: %d\n", traversalTime(requested_tracks, size, alg));
             break;
         default:
             printf("Invalid algorithm type\n");
@@ -209,19 +212,19 @@ void compare(int requested_tracks[], int proccessed_tracks[], int size, enum Alg
         case SSTF:
             printf("SSTF Task Sequence: ");
             print_task_order(proccessed_tracks, size);
-            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, SSTF));
+            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, compareToAlg));
             printDelays(requested_tracks, proccessed_tracks, size);
             break;
         case SCAN:
             printf("SCAN Task Sequence: ");
             print_task_order(proccessed_tracks, size);
-            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, SCAN));
+            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, compareToAlg));
             printDelays(requested_tracks, proccessed_tracks, size);
             break;
         case FCFS:
             printf("FCFS Task Sequence: ");
             print_task_order(proccessed_tracks, size);
-            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, FCFS));
+            printf("Total Travesal: %d\n", traversalTime(proccessed_tracks, size, compareToAlg));
             printDelays(requested_tracks, proccessed_tracks, size);
             break;
         default:
